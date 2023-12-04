@@ -14,15 +14,43 @@ If you are not familiar with the different technologies used in this project, pl
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 
-## Learn More
+## TodoList
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### 1. Backend
+- [] Update Prisma Schema
+- [] Add Other Auth Provider
+- [] Create TRPC Router for Todos
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### 2. Frontend
+- [] Login
+- [] TodoList
+- [] Create Todo
+- [] Toggle Todo
+- [] Delete Todo
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Start Project
 
-## How do I deploy this?
+### 1. Create db in Vercel
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+[https://vercel.com/dashboard/stores](https://vercel.com/dashboard/stores)
+
+### 2. Create .env file
+```dotenv
+# use vercel db variables
+POSTGRES_URL=""
+POSTGRES_PRISMA_URL=""
+POSTGRES_URL_NON_POOLING=""
+POSTGRES_USER=""
+POSTGRES_HOST=""
+POSTGRES_PASSWORD=""
+POSTGRES_DATABASE=""
+```
+
+### 3. Shell
+
+```shell
+# run
+pnpm install
+pnpm run db:push
+pnpm run dev
+```
