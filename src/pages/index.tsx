@@ -1,12 +1,8 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
+import Todo from "~/components/diy/todo";
 import { UserNav } from "~/components/diy/userNav";
-
-import {
-  Button
-} from "~/components/ui/button";
-
-
+import { Input } from "~/components/ui/input";
 import { api } from "~/utils/api";
 
 export default function Home() {
@@ -25,11 +21,57 @@ export default function Home() {
 }
 
 function AuthShowcase() {
-  const { data: sessionData } = useSession();
+  const { data, isLoading, isError, refetch } = api.todo.all.useQuery();
+  const { mutateAsync } = api.todo.create.useMutation();
+
+  const [newTodo, setNewTodo] = useState("");
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTodo(e.target.value);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="mx-auto mt-5 flex w-1/3 justify-center">
+        Loading Todos ....
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mx-auto mt-5 flex w-1/3 justify-center">
+        Loading Todos Error !!!
+      </div>
+    );
+  }
+
+  const handleConfirmCreate = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      await mutateAsync({ text: newTodo });
+      await refetch();
+      setNewTodo('');
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center justify-end gap-4">
-      <UserNav />
-    </div>
+    <>
+      <div className="mx-auto mt-5 flex w-1/3 justify-end">
+        <UserNav />
+      </div>
+      <div className="mx-auto my-5 flex w-1/3 flex-col justify-end">
+        <div className="mb-2">
+          {data.map((todo) => (
+            <Todo todo={todo} />
+          ))}
+        </div>
+        <Input
+          placeholder="create new todo"
+          value={newTodo}
+          onChange={handleInputChange}
+          onKeyDown={handleConfirmCreate}
+        />
+      </div>
+    </>
   );
 }
