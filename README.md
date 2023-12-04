@@ -18,8 +18,8 @@ If you are not familiar with the different technologies used in this project, pl
 
 ### 1. Backend
 - [x] Update Prisma Schema
-- [ ] Add Other Auth Provider
-- [ ] Create TRPC Router for Todos
+- [x] Add Other Auth Provider
+- [x] Create TRPC Router for Todos
 
 ### 2. Frontend
 - [ ] Login
