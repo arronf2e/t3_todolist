@@ -17,7 +17,7 @@ If you are not familiar with the different technologies used in this project, pl
 ## TodoList
 
 ### 1. Backend
-- [ ] Update Prisma Schema
+- [x] Update Prisma Schema
 - [ ] Add Other Auth Provider
 - [ ] Create TRPC Router for Todos
 
