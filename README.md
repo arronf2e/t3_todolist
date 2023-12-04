@@ -17,16 +17,16 @@ If you are not familiar with the different technologies used in this project, pl
 ## TodoList
 
 ### 1. Backend
-- [] Update Prisma Schema
-- [] Add Other Auth Provider
-- [] Create TRPC Router for Todos
+- [ ] Update Prisma Schema
+- [ ] Add Other Auth Provider
+- [ ] Create TRPC Router for Todos
 
 ### 2. Frontend
-- [] Login
-- [] TodoList
-- [] Create Todo
-- [] Toggle Todo
-- [] Delete Todo
+- [ ] Login
+- [ ] TodoList
+- [ ] Create Todo
+- [ ] Toggle Todo
+- [ ] Delete Todo
 
 ## Start Project
 
