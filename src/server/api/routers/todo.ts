@@ -11,6 +11,9 @@ export const todoRouter = createTRPCRouter({
     const todos = await ctx.db.todo.findMany({
       where: {
         userId: ctx.session.user.id,
+      },
+      orderBy: {
+        createdAt: 'asc'
       }
     });
     return todos;

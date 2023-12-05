@@ -1,12 +1,17 @@
-import { Todo } from "@prisma/client";
+import type { Todo } from "@prisma/client";
 
 import { Switch } from "~/components/ui/switch";
 
-export default function Todo({ todo }: { todo: Todo }) {
+type TodoProps = {
+  todo: Todo,
+  toggle: (todo: Todo) => void  
+}
+
+export default function Todo({ todo, toggle }: TodoProps) {
   return (
-    <p className="flex justify-between">
+    <p className={`flex justify-between ${todo.done ? 'line-through' : ''}`}>
       {todo.text}
-      <Switch value={Number(todo.done)}/>
+      <Switch checked={todo.done} onCheckedChange={() => toggle(todo)}/>
     </p>
   );
 }

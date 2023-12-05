@@ -1,11 +1,18 @@
+import type { Todo as TodoType } from "@prisma/client";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
+import { useState } from "react";
 import Todo from "~/components/diy/todo";
 import { UserNav } from "~/components/diy/userNav";
+import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { useToast } from "~/components/ui/use-toast";
 import { api } from "~/utils/api";
 
 export default function Home() {
+  const { data } = useSession();
+
   return (
     <>
       <Head>
@@ -14,7 +21,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <AuthShowcase />
+        {data ? (
+          <AuthShowcase />
+        ) : (
+          <div className="flex justify-center">
+            <Button onClick={() => signIn()}>Sign In</Button>
+          </div>
+        )}
       </main>
     </>
   );
@@ -22,9 +35,12 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data, isLoading, isError, refetch } = api.todo.all.useQuery();
-  const { mutateAsync } = api.todo.create.useMutation();
+  const createMutation = api.todo.create.useMutation();
+  const toggleMutation = api.todo.toggle.useMutation();
 
   const [newTodo, setNewTodo] = useState("");
+
+  const { toast } = useToast();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
@@ -48,10 +64,23 @@ function AuthShowcase() {
 
   const handleConfirmCreate = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
-      await mutateAsync({ text: newTodo });
+      if (newTodo === "") {
+        toast({
+          variant: "destructive",
+          title: "Tips",
+          description: "todo text empty!!",
+        });
+        return;
+      }
+      await createMutation.mutateAsync({ text: newTodo });
       await refetch();
-      setNewTodo('');
+      setNewTodo("");
     }
+  };
+
+  const handleToggle = async (todo: TodoType) => {
+    await toggleMutation.mutateAsync({ id: todo.id, done: !todo.done });
+    await refetch();
   };
 
   return (
@@ -62,7 +91,7 @@ function AuthShowcase() {
       <div className="mx-auto my-5 flex w-1/3 flex-col justify-end">
         <div className="mb-2">
           {data.map((todo) => (
-            <Todo todo={todo} />
+            <Todo todo={todo} key={todo.id} toggle={handleToggle} />
           ))}
         </div>
         <Input
